@@ -1,0 +1,102 @@
+create database Register_system;
+use Register_system
+go
+
+if exists(select * from sysobjects 
+where name='administrator')
+drop table administrator;
+
+if exists(select * from sysobjects 
+where name='hospital')
+drop table hospital;
+
+if exists(select * from sysobjects 
+where name='dept')
+drop table dept;
+
+if exists(select * from sysobjects 
+where name='doctor')
+drop table doctor;
+
+if exists(select * from sysobjects 
+where name='user')
+drop table user;
+
+if exists(select * from sysobjects 
+where name='appoinment')
+drop table appoinment;
+
+
+
+go
+
+create table administrator
+(
+adminID int primary key identity(1,1),
+adminLoginName varchar(20),
+adminLoginPwd varchar(20)
+)
+go
+
+create table hospital
+(
+h_ID int primary key identity(1,1),
+h_name varchar(20) not null,
+h_address varchar(20) not null,
+remark varchar(50)
+)
+go
+
+create table dept
+(
+dept_ID int primary key identity(1,1),
+dept_name varchar(20),
+dept_spec varchar(20),
+h_ID int foreign key references hospital(h_ID) not null,
+
+)
+go
+
+
+create table doctor
+(
+d_ID int primary key identity(1,1),
+d_name varchar(20) not null,
+d_description varchar(20) not null,
+zhicheng varchar(20) not null,
+h_ID int foreign key references hospital(h_ID) not null,
+dept_ID int foreign key references dept(dept_ID) not null,
+limit_visits int,
+surgery_weekday varchar(20)
+
+)
+go
+
+create table user
+(
+user_ID int primary key identity(1,1) not null,
+user_name varchar(20) not null,
+userLoginName varchar(20) not null,
+userLoginPwd varchar(20) not null,
+user_Phone varchar(20) not null,
+user_address varchar(20) not null,
+d_ID int foreign key references doctor(d_ID),
+Time datetime not null,
+dept_ID int foreign key references dept(dept_ID),
+)
+go
+
+
+create table appointment
+(
+a_ID int primary key identity(1,1),
+user_ID int foreign key references user(user_ID),
+d_ID int foreign key references doctor(d_ID),
+remark varchar(50) ,
+
+)
+go
+
+
+
+
